@@ -9,6 +9,7 @@ class Client: public QObject{
     Q_OBJECT
 private:
     QTcpSocket* _socket;
+    QString _login;
 
 public:
     Client(QString host, uint port, QObject* parent = 0);

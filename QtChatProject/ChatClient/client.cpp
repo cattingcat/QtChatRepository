@@ -13,6 +13,7 @@ bool Client::auth(const QString& login){
     if(b){
         QString answer = ss.readAll();
         qDebug()<<answer;
+        _login = login;
         connect(_socket, SIGNAL(readyRead()), SLOT(dataRead()));
     } else {
         qDebug()<<"auth problem";
@@ -29,6 +30,6 @@ void Client::dataRead(){
 
 void Client::sendMessage(const QString& message){
     QTextStream ss(_socket);
-    ss<<message;
+    ss<<this->_login<<':'<<message;
     ss.flush();
 }
