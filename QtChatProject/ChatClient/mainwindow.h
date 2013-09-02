@@ -40,7 +40,7 @@ public:
 
 public slots:
     void send(){
-        _client->sendMessage("[message]"+_input->text());
+        _client->sendMessage(_input->text());
         _input->clear();
     }
     void connectClient(){

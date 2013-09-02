@@ -1,5 +1,7 @@
 #include "client.h"
 #include "server.h"
+#include <QStringList>
+
 
 Client::Client(Server* server, QTcpSocket* socket):
     QObject(server),_server(server), _socket(socket), _login(0) {
@@ -11,15 +13,22 @@ void Client::processMessage(){
     QByteArray arr = _socket->readAll();
     QTextStream ts(arr);
     QString message = ts.readAll();
-    qDebug()<<"Client->processMessage: "<<message;
     if(_login){
         //TODO process mesage command
-        _server->sendBroadcast(message);
+        QString commands = message.left(message.indexOf(']'));
+        commands = commands.right(commands.length()-1);
+
+        QStringList l = commands.split(',');
+        if(l.contains(QString("bcast"))){
+            _server->sendBroadcast(message);
+        } else {
+            qDebug()<<commands;
+        }
+
     } else {
         QString login = message.remove(0, 6);
         this->_login = new QString(login);
-        qDebug()<<"auth from: " << login;
-        QTextStream(_socket)<<"succes auth";
+        QTextStream(_socket)<<"[succes]";
         emit authSuccess();
     }
 }
