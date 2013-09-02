@@ -12,7 +12,7 @@ class Client: public QObject{
     Q_OBJECT
 private:
     QTcpSocket* _socket;
-    bool _auth;
+    QString* _login;
 
 public:
     Client(Server* server, QTcpSocket* socket);

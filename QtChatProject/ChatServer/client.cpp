@@ -2,7 +2,7 @@
 #include "server.h"
 
 Client::Client(Server* server, QTcpSocket* socket):
-    QObject(server), _socket(socket), _auth(false){
+    QObject(server), _socket(socket), _login(0) {
     connect(_socket, SIGNAL(readyRead()), SLOT(processMessage()));
 
 }
@@ -12,13 +12,13 @@ void Client::processMessage(){
     QTextStream ts(arr);
     QString message = ts.readAll();
     qDebug()<<"Client->processMessage: "<<message;
-    if(_auth){
+    if(_login){
         emit messageReceived(message);
     } else {
-        //TODO auth
-        qDebug()<<"auth message: "<<message;
+        QString login = message.remove(0, 6);
+        this->_login = new QString(login);
+        qDebug()<<"auth from: " << login;
         QTextStream(_socket)<<"succes auth";
-        _auth = true;
         emit authSuccess();
     }
 }
