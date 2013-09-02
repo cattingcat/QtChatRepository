@@ -12,8 +12,8 @@ int main(int argc, char *argv[])
     w.show();
 
     //TODO
-    AuthWindow w;
-    w.show();
+    //AuthWindow w;
+    //w.show();
     
     return a.exec();
 }

@@ -5,7 +5,6 @@
 #include <QThread>
 #include <QString>
 
-class AuthThread;
 class Server;
 
 class Client: public QObject{
@@ -13,6 +12,7 @@ class Client: public QObject{
 private:
     QTcpSocket* _socket;
     QString* _login;
+    Server* _server;
 
 public:
     Client(Server* server, QTcpSocket* socket);
@@ -29,7 +29,6 @@ signals:
     void messageReceived(const QString& message);
 
 
-    friend class AuthThread;
 };
 
 #endif // CLIENT_H

@@ -21,6 +21,8 @@ public:
 private slots:
     void processConnection();
     void clientAuthenticated();
+
+public slots:
     void sendBroadcast(const QString& message);
 };
 

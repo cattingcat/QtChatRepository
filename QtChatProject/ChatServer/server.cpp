@@ -21,7 +21,6 @@ void Server::processConnection(){
 void Server::clientAuthenticated(){
     Client* c = dynamic_cast<Client*>(sender());
     _clients->append(c);
-    this->connect(c, SIGNAL(messageReceived(QString)), SLOT(sendBroadcast(QString)));
 }
 
 void Server::sendBroadcast(const QString& message){

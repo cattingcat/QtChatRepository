@@ -57,7 +57,7 @@ static const uint qt_meta_data_Server[] = {
  // slots: name, argc, parameters, tag, flags
        1,    0,   29,    2, 0x08,
        3,    0,   30,    2, 0x08,
-       4,    1,   31,    2, 0x08,
+       4,    1,   31,    2, 0x0a,
 
  // slots: parameters
     QMetaType::Void,

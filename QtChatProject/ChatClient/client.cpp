@@ -30,6 +30,6 @@ void Client::dataRead(){
 
 void Client::sendMessage(const QString& message){
     QTextStream ss(_socket);
-    ss<<this->_login<<':'<<message;
+    ss<<message;
     ss.flush();
 }

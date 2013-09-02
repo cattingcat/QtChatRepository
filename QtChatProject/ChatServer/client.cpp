@@ -2,7 +2,7 @@
 #include "server.h"
 
 Client::Client(Server* server, QTcpSocket* socket):
-    QObject(server), _socket(socket), _login(0) {
+    QObject(server),_server(server), _socket(socket), _login(0) {
     connect(_socket, SIGNAL(readyRead()), SLOT(processMessage()));
 
 }
@@ -13,7 +13,8 @@ void Client::processMessage(){
     QString message = ts.readAll();
     qDebug()<<"Client->processMessage: "<<message;
     if(_login){
-        emit messageReceived(message);
+        //TODO process mesage command
+        _server->sendBroadcast(message);
     } else {
         QString login = message.remove(0, 6);
         this->_login = new QString(login);
