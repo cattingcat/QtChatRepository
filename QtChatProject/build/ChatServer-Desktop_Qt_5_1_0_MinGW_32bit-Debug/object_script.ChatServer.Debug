@@ -1,0 +1,12 @@
+INPUT(
+./debug\main.o
+./debug\client.o
+./debug\server.o
+./debug\remoteserver.o
+./debug\message.o
+./debug\moc_mainwindow.o
+./debug\moc_server.o
+./debug\moc_client.o
+./debug\moc_remoteserver.o
+./debug\moc_message.o
+);

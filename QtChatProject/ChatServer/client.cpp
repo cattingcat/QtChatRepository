@@ -1,5 +1,6 @@
 #include "client.h"
 #include "server.h"
+#include "message.h"
 #include <QStringList>
 
 
@@ -15,11 +16,13 @@ void Client::processMessage(){
     QString message = ts.readAll();
     if(_login){
         //TODO process mesage command
-        QString commands = message.left(message.indexOf(']'));
+        int iof = message.indexOf(']');
+        QString commands = message.left(iof);
         commands = commands.right(commands.length()-1);
+        message = message.right(message.length() - iof - 1);
+        Message m(message, commands);
 
-        QStringList l = commands.split(',');
-        if(l.contains(QString("bcast"))){
+        if(m.containsCommand(QString("bcast"))){
             _server->sendBroadcast(message);
         } else {
             qDebug()<<commands;
