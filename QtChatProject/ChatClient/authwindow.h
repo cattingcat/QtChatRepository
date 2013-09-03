@@ -5,20 +5,26 @@
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QDialog>
+#include <QtDebug>
 
-class AuthWindow: public QWidget{
+class AuthWindow: public QDialog{
     Q_OBJECT
 private:
     QLineEdit* _host;
     QLineEdit* _port;
     QLineEdit* _login;
 
+    QString _shost;
+    QString _sport;
+    QString _slogin;
+
 public:
     AuthWindow(){
         QHBoxLayout* layout = new QHBoxLayout;
 
-        _host = new QLineEdit(this);
-        _port = new QLineEdit(this);
+        _host = new QLineEdit("localhost", this);
+        _port = new QLineEdit("2323", this);
         _login = new QLineEdit(this);
         QLabel* lhost = new QLabel("&Host", this);
         lhost->setBuddy(_host);
@@ -42,6 +48,32 @@ public:
         layout->addLayout(loginLayout);
 
         setLayout(layout);
+    }
+
+public slots:
+    int exec(){
+        QDialog::exec();
+        _shost = _host->text();
+        _sport = _port->text();
+        _slogin = _login->text();
+
+        if(_shost.isEmpty() || _sport.isEmpty() || _slogin.isEmpty())
+            return 0;
+        else
+            return 1;
+        qDebug()<<"exec";
+    }
+
+    QString host(){
+        return _shost;
+    }
+
+    uint port(){
+        return _sport.toInt();
+    }
+
+    QString login(){
+        return _slogin;
     }
 
 };

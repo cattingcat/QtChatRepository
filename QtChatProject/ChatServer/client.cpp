@@ -16,7 +16,7 @@ void Client::processMessage(){
     Message m(arr);
     if(_login){
         if(CMD("bcast")){
-            _server->sendBroadcast(m.message());
+            _server->sendBroadcast(QString().append(this->_login).append(QString("> ")).append(m.message()));
         } else if(CMD("private")) {
             // TODO moar command
             _server->sendBroadcast("private command called");

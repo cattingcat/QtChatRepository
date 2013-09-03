@@ -17,13 +17,15 @@ private:
     Client* _client;
     QLineEdit* _input;
 
+    QString _login;
+
 public:
-    MainWindow(QWidget *parent = 0): QWidget(parent) {
+    MainWindow(QString host, uint port, QString login, QWidget *parent = 0):
+        QWidget(parent), _login(login) {
         _sendButton = new QPushButton("send", this);
         _connectButton = new QPushButton("connect", this);
         _list = new QListWidget(this);
-        _list->addItem("qweqwe");
-        _client = new Client("localhost", 2323);
+        _client = new Client(host, port);
         _input = new QLineEdit(this);
         QVBoxLayout* layout = new QVBoxLayout(this);
         layout->addWidget(_list);
@@ -44,7 +46,7 @@ public slots:
         _input->clear();
     }
     void connectClient(){
-        bool b = _client->auth("login");
+        bool b = _client->auth(_login);
         if(b){
             _connectButton->hide();
             connect(_client, SIGNAL(messageReceive(QString)), SLOT(recv(QString)));

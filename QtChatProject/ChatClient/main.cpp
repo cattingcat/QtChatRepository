@@ -8,12 +8,14 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    MainWindow w;
-    w.show();
+
 
     //TODO
-    //AuthWindow w;
-    //w.show();
+    AuthWindow aw;
+    bool b = aw.exec();
+
+    MainWindow w(aw.host(), aw.port(), aw.login());
+    w.show();
     
     return a.exec();
 }
