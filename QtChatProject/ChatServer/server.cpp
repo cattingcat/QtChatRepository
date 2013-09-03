@@ -24,7 +24,6 @@ void Server::clientAuthenticated(){
 }
 
 void Server::sendBroadcast(const QString& message){
-    qDebug()<<"Server-> sendBroadcast: "<<message;
     for(QList<Client*>::Iterator iter = _clients->begin(); iter != _clients->end(); ++iter){
         (*iter)->sendMessage(message);
     }

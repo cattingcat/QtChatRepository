@@ -13,8 +13,10 @@ private:
     QString _message;
 public:
     Message(QString message, QString commends);
-    bool containsCommand(QString command);
-    QStringList* getCommandParameters(QString command);
+    Message(QByteArray message);
+    bool containsCommand(QString command) const;
+    QStringList* getCommandParameters(QString command) const;
+    QString message() const;
 };
 
 #endif // MESSAGE_H

@@ -3,6 +3,7 @@
 #include "message.h"
 #include <QStringList>
 
+#define CMD(commad_name) m.containsCommand(QString((commad_name)))
 
 Client::Client(Server* server, QTcpSocket* socket):
     QObject(server),_server(server), _socket(socket), _login(0) {
@@ -12,27 +13,24 @@ Client::Client(Server* server, QTcpSocket* socket):
 
 void Client::processMessage(){
     QByteArray arr = _socket->readAll();
-    QTextStream ts(arr);
-    QString message = ts.readAll();
+    Message m(arr);
     if(_login){
-        //TODO process mesage command
-        int iof = message.indexOf(']');
-        QString commands = message.left(iof);
-        commands = commands.right(commands.length()-1);
-        message = message.right(message.length() - iof - 1);
-        Message m(message, commands);
-
-        if(m.containsCommand(QString("bcast"))){
-            _server->sendBroadcast(message);
+        if(CMD("bcast")){
+            _server->sendBroadcast(m.message());
+        } else if(CMD("private")) {
+            // TODO moar command
+            _server->sendBroadcast("private command called");
         } else {
-            qDebug()<<commands;
+            //qDebug()<<commands;
         }
-
     } else {
-        QString login = message.remove(0, 6);
-        this->_login = new QString(login);
-        QTextStream(_socket)<<"[succes]";
-        emit authSuccess();
+        if(CMD("auth")){
+            this->_login = new QString(m.message());
+            QTextStream(_socket)<<"[succes]";
+            emit authSuccess();
+        } else {
+            // TODO disconnect
+        }
     }
 }
 void Client::sendMessage(const QString& message){
