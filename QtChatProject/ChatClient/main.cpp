@@ -8,17 +8,18 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-
-
-    //TODO
     AuthWindow aw;
     bool b = aw.exec();
-    MainWindow* w;
 
     if(b){
-        w = new MainWindow(aw.host(), aw.port(), aw.login());
+        MainWindow* w = new MainWindow(aw.host(), aw.port(), aw.login());
+        w->connectClient();
         w->show();
+    } else {
+        a.closeAllWindows();
+        a.exit();
+        return 0;
     }
-    
+    aw.close();
     return a.exec();
 }

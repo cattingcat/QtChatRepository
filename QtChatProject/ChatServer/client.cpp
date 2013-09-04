@@ -27,6 +27,7 @@ void Client::processMessage(){
         if(CMD("auth")){
             this->_login = new QString(m.message());
             QTextStream(_socket)<<"[succes]";
+            _server->sendBroadcast(QString("Server> ").append(_login).append(QString(" logged in...")));
             emit authSuccess();
         } else {
             // TODO disconnect

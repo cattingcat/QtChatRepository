@@ -27,26 +27,23 @@ public:
     MainWindow(QString host, uint port, QString login, QWidget *parent = 0):
         QWidget(parent), _login(login) {
         _sendButton = new QPushButton("send", this);
-        _connectButton = new QPushButton("connect", this);
-        _smileButton = new QPushButton("smile", this);        
+        _smileButton = new QPushButton("smile", this);
         _client = new Client(host, port);
         _input = new QLineEdit(this);
         _chat = new QTextEdit(this);
+        _chat->setReadOnly(true);
 
         QVBoxLayout* layout = new QVBoxLayout(this);
-
         layout->addWidget(_chat);
-        layout->addWidget(_sendButton);
-        layout->addWidget(_connectButton);
 
         QHBoxLayout* inputLayout = new QHBoxLayout;
         inputLayout->addWidget(_input);
         inputLayout->addWidget(_smileButton);
+        inputLayout->addWidget(_sendButton);
         layout->addLayout(inputLayout);
 
         QObject::connect(_input, SIGNAL(returnPressed()), _sendButton, SIGNAL(clicked()));
         QObject::connect(_sendButton, SIGNAL(clicked()), this, SLOT(send()));
-        QObject::connect(_connectButton, SIGNAL(clicked()), this, SLOT(connectClient()));
 
         QMenu* m = createSmileMenu();
         _smileButton->setMenu(m);
