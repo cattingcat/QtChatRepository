@@ -19,3 +19,15 @@ SOURCES += main.cpp \
 HEADERS  += mainwindow.h \
     client.h \
     authwindow.h
+
+RESOURCES += \
+    Resource.qrc
+
+OTHER_FILES += \
+    page.html \
+    img/6.jpg \
+    img/5.jpg \
+    img/4.png \
+    img/3.jpg \
+    img/2.jpg \
+    img/1.jpg
