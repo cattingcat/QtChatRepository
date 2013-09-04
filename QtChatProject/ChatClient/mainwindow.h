@@ -14,7 +14,8 @@ private:
     QPushButton* _sendButton;
     QPushButton* _connectButton;
     QPushButton* _smileButton;
-    QGroupBox* _messageList;
+
+    QTextEdit* _chat;
     Client* _client;
     QLineEdit* _input;
     QString _login;
@@ -26,16 +27,14 @@ public:
         QWidget(parent), _login(login) {
         _sendButton = new QPushButton("send", this);
         _connectButton = new QPushButton("connect", this);
-        _smileButton = new QPushButton("smile", this);
-        _messageList = new QGroupBox(this);
+        _smileButton = new QPushButton("smile", this);        
         _client = new Client(host, port);
         _input = new QLineEdit(this);
+        _chat = new QTextEdit(this);
+
         QVBoxLayout* layout = new QVBoxLayout(this);
 
-        _messageListLayout = new QVBoxLayout(this);
-        _messageList->setLayout(_messageListLayout);
-
-        layout->addWidget(_messageList);
+        layout->addWidget(_chat);
         layout->addWidget(_sendButton);
         layout->addWidget(_connectButton);
 
@@ -63,7 +62,7 @@ private:
         foreach(QString s, files){
             QString filepath = dir.path() + QString("/") + s;
             QIcon icon(filepath);
-            QAction* action = res->addAction(icon, "", this, SLOT(appendInput()));
+            QAction* action = res->addAction(icon, s, this, SLOT(appendInput()));
             action->setData(filepath);
         }
         return res;
@@ -87,11 +86,8 @@ public slots:
 
     void recv(const QString& message){
         qDebug()<<message;
-        //QListWidgetItem* item = new QListWidgetItem(_messageList);
-        QTextEdit* mess = new QTextEdit(this);
+        QTextEdit* mess = _chat;
         mess->append(message);
-        mess->setFrameShape(QFrame::Box);
-        _messageListLayout->addWidget(mess);
         update();
     }
 

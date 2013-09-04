@@ -7,6 +7,7 @@
 #include <QHBoxLayout>
 #include <QDialog>
 #include <QtDebug>
+#include <QPushButton>
 
 class AuthWindow: public QDialog{
     Q_OBJECT
@@ -21,7 +22,8 @@ private:
 
 public:
     AuthWindow(){
-        QHBoxLayout* layout = new QHBoxLayout;
+        QVBoxLayout* mainLayout = new QVBoxLayout;
+        QHBoxLayout* inputLayout = new QHBoxLayout;
 
         _host = new QLineEdit("localhost", this);
         _port = new QLineEdit("2323", this);
@@ -43,11 +45,17 @@ public:
         loginLayout->addWidget(llogin);
         loginLayout->addWidget(_login);
 
-        layout->addLayout(hostLayout);
-        layout->addLayout(portLayout);
-        layout->addLayout(loginLayout);
+        inputLayout->addLayout(hostLayout);
+        inputLayout->addLayout(portLayout);
+        inputLayout->addLayout(loginLayout);
 
-        setLayout(layout);
+        mainLayout->addLayout(inputLayout);
+
+        QPushButton* startButton = new QPushButton("start");
+        connect(startButton, SIGNAL(clicked()), SLOT(slot()));
+        mainLayout->addWidget(startButton);
+
+        setLayout(mainLayout);
     }
 
 public slots:
@@ -56,12 +64,10 @@ public slots:
         _shost = _host->text();
         _sport = _port->text();
         _slogin = _login->text();
-
         if(_shost.isEmpty() || _sport.isEmpty() || _slogin.isEmpty())
             return 0;
         else
             return 1;
-        qDebug()<<"exec";
     }
 
     QString host(){
@@ -74,6 +80,10 @@ public slots:
 
     QString login(){
         return _slogin;
+    }
+private slots:
+    void slot(){
+        this->close();
     }
 
 };

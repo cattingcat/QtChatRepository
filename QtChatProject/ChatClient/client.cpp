@@ -30,6 +30,7 @@ void Client::dataRead(){
 
 void Client::sendMessage(const QString& message){
     QTextStream ss(_socket);
-    ss<<message;
+    // TODO delete [bcast]
+    ss<<"[bcast]"<<message;
     ss.flush();
 }

@@ -13,9 +13,12 @@ int main(int argc, char *argv[])
     //TODO
     AuthWindow aw;
     bool b = aw.exec();
+    MainWindow* w;
 
-    MainWindow w(aw.host(), aw.port(), aw.login());
-    w.show();
+    if(b){
+        w = new MainWindow(aw.host(), aw.port(), aw.login());
+        w->show();
+    }
     
     return a.exec();
 }
