@@ -24,7 +24,7 @@ bool Client::auth(const QString& login){
 void Client::dataRead(){
     QTextStream ss(_socket);
     QString message =  ss.readAll();
-    emit messageReceive(message);
+    emit messageRecv(message);
 }
 
 

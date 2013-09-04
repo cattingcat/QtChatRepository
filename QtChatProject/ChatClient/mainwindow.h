@@ -5,6 +5,7 @@
 #include <QTextStream>
 #include <QDir>
 #include <QtWidgets>
+#include <QDateTime>
 
 
 class MainWindow : public QWidget
@@ -43,6 +44,7 @@ public:
         inputLayout->addWidget(_smileButton);
         layout->addLayout(inputLayout);
 
+        QObject::connect(_input, SIGNAL(returnPressed()), _sendButton, SIGNAL(clicked()));
         QObject::connect(_sendButton, SIGNAL(clicked()), this, SLOT(send()));
         QObject::connect(_connectButton, SIGNAL(clicked()), this, SLOT(connectClient()));
 
@@ -74,21 +76,19 @@ public slots:
         _input->clear();
     }
 
+    void messageRecv(const QString& message){
+        _chat->append(QDateTime::currentDateTime().time().toString() + QString(" ") + message);
+        update();
+    }
+
     void connectClient(){
         bool b = _client->auth(_login);
         if(b){
             _connectButton->hide();
-            connect(_client, SIGNAL(messageReceive(QString)), SLOT(recv(QString)));
+            connect(_client, SIGNAL(messageRecv(QString)), SLOT(messageRecv(QString)));
         } else {
             qDebug()<<"auth error";
         }
-    }
-
-    void recv(const QString& message){
-        qDebug()<<message;
-        QTextEdit* mess = _chat;
-        mess->append(message);
-        update();
     }
 
 private slots:

@@ -22,7 +22,7 @@ public slots:
     void sendMessage(const QString& message);
 
 signals:
-    void messageReceive(const QString&);
+    void messageRecv(const QString&);
 };
 
 #endif // CLIENT_H
