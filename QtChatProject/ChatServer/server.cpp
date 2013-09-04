@@ -29,4 +29,9 @@ void Server::sendBroadcast(const QString& message){
     }
 }
 
+void Server::clientDisconnected(){
+    Client* c = dynamic_cast<Client*>(sender());
+    _clients->removeOne(c);
+}
+
 

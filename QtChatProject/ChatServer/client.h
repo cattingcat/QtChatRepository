@@ -20,6 +20,7 @@ public:
 
 private slots:
     void processMessage();
+    void disconnected();
 
 public slots:
     void sendMessage(const QString& message);
@@ -27,6 +28,7 @@ public slots:
 signals:
     void authSuccess();
     void messageReceived(const QString& message);
+    void clientOff();
 
 
 };

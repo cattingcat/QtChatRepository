@@ -8,7 +8,7 @@
 Client::Client(Server* server, QTcpSocket* socket):
     QObject(server),_server(server), _socket(socket), _login(0) {
     connect(_socket, SIGNAL(readyRead()), SLOT(processMessage()));
-
+    connect(_socket, SIGNAL(disconnected()), SIGNAL(clientOff()));
 }
 
 void Client::processMessage(){
@@ -28,14 +28,21 @@ void Client::processMessage(){
             this->_login = new QString(m.message());
             QTextStream(_socket)<<"[succes]";
             _server->sendBroadcast(QString("Server> ").append(_login).append(QString(" logged in...")));
+            connect(_socket, SIGNAL(disconnected()), SLOT(disconnected()));
             emit authSuccess();
         } else {
             // TODO disconnect
+            _socket->disconnectFromHost();
         }
     }
 }
+
 void Client::sendMessage(const QString& message){
     QTextStream ts(_socket);
     ts<<message;
     ts.flush();
+}
+
+void Client::disconnected(){
+    _server->sendBroadcast(QString("Server> ").append(_login).append(QString(" disconnect...")));
 }

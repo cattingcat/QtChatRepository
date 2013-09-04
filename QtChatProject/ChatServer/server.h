@@ -26,6 +26,7 @@ private slots:
 
 public slots:
     void sendBroadcast(const QString& message);
+    void clientDisconnected();
 };
 
 #endif // SERVER_H
