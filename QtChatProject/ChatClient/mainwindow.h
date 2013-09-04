@@ -1,14 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 #include <QMainWindow>
-#include <QPushButton>
-#include <QListWidget>
-#include <QVBoxLayout>
-#include <QLineEdit>
 #include "client.h"
-#include <QMenu>
 #include <QTextStream>
 #include <QDir>
+#include <QtWidgets>
 
 
 class MainWindow : public QWidget
@@ -18,11 +14,12 @@ private:
     QPushButton* _sendButton;
     QPushButton* _connectButton;
     QPushButton* _smileButton;
-    QListWidget* _list;
+    QGroupBox* _messageList;
     Client* _client;
     QLineEdit* _input;
-
     QString _login;
+
+    QVBoxLayout* _messageListLayout;
 
 public:
     MainWindow(QString host, uint port, QString login, QWidget *parent = 0):
@@ -30,17 +27,23 @@ public:
         _sendButton = new QPushButton("send", this);
         _connectButton = new QPushButton("connect", this);
         _smileButton = new QPushButton("smile", this);
-        _list = new QListWidget(this);
+        _messageList = new QGroupBox(this);
         _client = new Client(host, port);
         _input = new QLineEdit(this);
         QVBoxLayout* layout = new QVBoxLayout(this);
-        layout->addWidget(_list);
+
+        _messageListLayout = new QVBoxLayout(this);
+        _messageList->setLayout(_messageListLayout);
+
+        layout->addWidget(_messageList);
         layout->addWidget(_sendButton);
         layout->addWidget(_connectButton);
+
         QHBoxLayout* inputLayout = new QHBoxLayout;
         inputLayout->addWidget(_input);
         inputLayout->addWidget(_smileButton);
         layout->addLayout(inputLayout);
+
         QObject::connect(_sendButton, SIGNAL(clicked()), this, SLOT(send()));
         QObject::connect(_connectButton, SIGNAL(clicked()), this, SLOT(connectClient()));
 
@@ -51,6 +54,7 @@ public:
     }
 
     ~MainWindow(){}
+
 private:
     QMenu* createSmileMenu(){
         QDir dir(":/resource/img");
@@ -65,11 +69,12 @@ private:
         return res;
     }
 
-public slots:
+public slots:    
     void send(){
         _client->sendMessage(_input->text());
         _input->clear();
     }
+
     void connectClient(){
         bool b = _client->auth(_login);
         if(b){
@@ -79,12 +84,14 @@ public slots:
             qDebug()<<"auth error";
         }
     }
+
     void recv(const QString& message){
         qDebug()<<message;
-        QListWidgetItem* item = new QListWidgetItem(_list);
-
-        item->setText(message);
-        _list->addItem(item);
+        //QListWidgetItem* item = new QListWidgetItem(_messageList);
+        QTextEdit* mess = new QTextEdit(this);
+        mess->append(message);
+        mess->setFrameShape(QFrame::Box);
+        _messageListLayout->addWidget(mess);
         update();
     }
 
