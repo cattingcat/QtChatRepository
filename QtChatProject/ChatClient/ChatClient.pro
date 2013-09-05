@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT += core gui
 QT += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -88,3 +88,4 @@ OTHER_FILES += \
     img/3.png \
     img/2kot.png \
     img/00.jpg
+

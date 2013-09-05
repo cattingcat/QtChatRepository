@@ -1,16 +1,15 @@
 #include "mainwindow.h"
-#include <QCoreApplication>
+#include <QApplication>
 #include "server.h"
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
+    QApplication a(argc, argv);
 
     Server* s = new Server(2323);
+    MainWindow w(s);
     s->run();
 
-   // MainWindow w;
-    //w.show();
-    
+
     return a.exec();
 }
