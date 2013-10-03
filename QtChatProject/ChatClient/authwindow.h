@@ -8,6 +8,8 @@
 #include <QDialog>
 #include <QtDebug>
 #include <QPushButton>
+#include <QtNetwork/QTcpSocket>
+
 
 class AuthWindow: public QDialog{
     Q_OBJECT
@@ -56,6 +58,8 @@ public:
         mainLayout->addWidget(startButton);
 
         setLayout(mainLayout);
+
+        getHost();
     }
 
 public slots:
@@ -84,6 +88,21 @@ public slots:
 private slots:
     void slot(){
         this->close();
+    }
+
+    void getHost(){
+        QTcpSocket sock;
+        sock.connectToHost("dl.dropboxusercontent.com", 80);
+        sock.write("GET /s/1o5g6k76mlhw3l7/text.txt?token_hash=AAEXKVnLJmFsl9-dp8KNog6vWaBcae2zIu_ockhkJRbi_g&amp;amp;amp;dl=1 HTTP/1.1\r\n"\
+                   "Host: dl.dropboxusercontent.com\r\n"\
+                   "Accept: */*\r\n"\
+                   "User-Agent: Mozilla/4.0 (compatible; MSIE 5.0; Windows 98)\r\n"\
+                   "\r\n\r\n");
+        qDebug() << "GET";
+        sock.waitForReadyRead();
+        QByteArray arr = sock.read(1024);
+        qDebug() << arr;
+        // TODO
     }
 
 };
