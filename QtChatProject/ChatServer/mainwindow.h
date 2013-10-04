@@ -5,14 +5,14 @@
 #include "server.h"
 #include <QSystemTrayIcon>
 
-class MainWindow : public QWidget
+class ChatWidget : public QMainWindow
 {
     Q_OBJECT
     Server* _server;
     QSystemTrayIcon* _trayIcon;
 
 public:
-    MainWindow(Server* server, QWidget *parent = 0) : QWidget(parent) {
+    ChatWidget(Server* server, QWidget *parent = 0) : QMainWindow(parent) {
         _server = server;
         _trayIcon = new QSystemTrayIcon(QIcon(":/res/icon.png"), this);
         QMenu* menu = new QMenu;
@@ -20,9 +20,13 @@ public:
         menu->addAction("Hide", this, SLOT(hide()));
         _trayIcon->setContextMenu(menu);
         _trayIcon->show();
+
+        QDockWidget* dw = new QDockWidget("dock", this);
+        dw->setWidget(new QLabel("hello dock"));
+        addDockWidget(Qt::RightDockWidgetArea, dw);
     }
 
-    ~MainWindow(){}
+    ~ChatWidget(){}
 };
 
 #endif // MAINWINDOW_H

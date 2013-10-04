@@ -8,12 +8,11 @@
 #include <QDateTime>
 
 
-class MainWindow : public QWidget
+class ChatWidget : public QWidget
 {
     Q_OBJECT    
 private:
     QPushButton* _sendButton;
-    QPushButton* _connectButton;
     QPushButton* _smileButton;
 
     QTextEdit* _chat;
@@ -24,7 +23,7 @@ private:
     QVBoxLayout* _messageListLayout;
 
 public:
-    MainWindow(QString host, uint port, QString login, QWidget *parent = 0):
+    ChatWidget(QString host, uint port, QString login, QWidget *parent = 0):
         QWidget(parent), _login(login) {
         _sendButton = new QPushButton("send", this);
         _smileButton = new QPushButton("smile", this);
@@ -51,7 +50,7 @@ public:
         setLayout(layout);
     }
 
-    ~MainWindow(){}
+    ~ChatWidget(){}
 
 private:
     QMenu* createSmileMenu(){
@@ -81,7 +80,6 @@ public slots:
     void connectClient(){
         bool b = _client->auth(_login);
         if(b){
-            _connectButton->hide();
             connect(_client, SIGNAL(messageRecv(QString)), SLOT(messageRecv(QString)));
         } else {
             qDebug()<<"auth error";

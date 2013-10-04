@@ -14,11 +14,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    client.cpp
+    client.cpp \
+    getter/param_getter.cpp
 
 HEADERS  += mainwindow.h \
     client.h \
-    authwindow.h
+    authwindow.h \
+    getter/param_getter.h
 
 RESOURCES += \
     Resource.qrc

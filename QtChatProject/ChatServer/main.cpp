@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     Server* s = new Server(2323);
-    MainWindow w(s);
+    ChatWidget w(s);
     s->run();
 
 

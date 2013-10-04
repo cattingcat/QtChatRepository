@@ -12,7 +12,8 @@ bool Client::auth(const QString& login){
     bool b = _socket->waitForReadyRead();
     if(b){
         QString answer = ss.readAll();
-        qDebug()<<answer;
+
+        qDebug()<<"server say: " << answer;
         _login = login;
         connect(_socket, SIGNAL(readyRead()), SLOT(dataRead()));
     } else {
